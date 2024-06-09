@@ -7,14 +7,14 @@ const EVENTS_URL = 'http://localhost:8081/events';
 
 export const LoginPage = () => {
     const [registerData, setRegisterData] = useState({
-        nombre: '',
-        correo: '',
+        username: '',
+        email: '',
         password: '',
         confirmPassword: ''
     });
 
     const [loginData, setLoginData] = useState({
-        correo: '',
+        email: '',
         password: ''
     });
 
@@ -91,8 +91,8 @@ export const LoginPage = () => {
                                 type="text"
                                 className="form-control"
                                 placeholder="Nombre"
-                                name="nombre"
-                                value={registerData.nombre}
+                                name="username"
+                                value={registerData.username}
                                 onChange={handleRegisterChange}
                             />
                         </div>
@@ -101,8 +101,8 @@ export const LoginPage = () => {
                                 type="email"
                                 className="form-control"
                                 placeholder="Correo"
-                                name="correo"
-                                value={registerData.correo}
+                                name="email"
+                                value={registerData.email}
                                 onChange={handleRegisterChange}
                             />
                         </div>
@@ -143,8 +143,8 @@ export const LoginPage = () => {
                                 type="text"
                                 className="form-control"
                                 placeholder="Correo"
-                                name="correo"
-                                value={loginData.correo}
+                                name="email"
+                                value={loginData.email}
                                 onChange={handleLoginChange}
                             />
                         </div>
