@@ -1,11 +1,17 @@
 package com.entelgy.project.demo.Controller;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.entelgy.project.demo.Entity.User;
 import com.entelgy.project.demo.Service.UserService;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -19,6 +25,11 @@ public class UserController {
     public User createUser(@RequestBody User user) {
         //user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userService.saveUser(user);
+    }
+
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
