@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,8 +31,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public boolean login(@RequestBody User user) {
-        return userService.authenticate(user);
+    public ResponseEntity<?> login(@RequestBody User user) {
+        Optional<User> authenticatedUser = userService.authenticate(user);
+        if (authenticatedUser.isPresent()) {
+            return ResponseEntity.ok(authenticatedUser.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
     }
 
     @PutMapping("/{id}")
