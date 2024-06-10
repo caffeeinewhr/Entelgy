@@ -18,6 +18,25 @@ public class EventService {
         return eventRepository.save(event);
     }
 
+    public Event updateEvent(Long id, Event event) {
+        Optional<Event> existingEvent = eventRepository.findById(id);
+        if (existingEvent.isPresent()) {
+            Event updatedEvent = existingEvent.get();
+            updatedEvent.setTitle(event.getTitle());
+            updatedEvent.setMessage(event.getMessage());
+            updatedEvent.setStartDate(event.getStartDate());
+            updatedEvent.setEndDate(event.getEndDate());
+            updatedEvent.setStart(event.getStart());
+            updatedEvent.setEnd(event.getEnd());
+            return eventRepository.save(updatedEvent);
+        }
+        return null;
+    }
+    
+    public void deleteEvent(Long id) {
+        eventRepository.deleteById(id);
+    }
+
     public List<Event> getAllEvents() {
         return eventRepository.findAll();
     }
