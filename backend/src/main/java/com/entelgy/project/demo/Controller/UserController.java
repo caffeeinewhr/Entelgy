@@ -1,5 +1,7 @@
 package com.entelgy.project.demo.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.entelgy.project.demo.Entity.User;
@@ -27,8 +29,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public boolean login(@RequestBody User user) {
-        return userService.authenticate(user);
+    public ResponseEntity<?> login(@RequestBody User user) {
+        Optional<User> authenticatedUser = userService.authenticate(user);
+        if (authenticatedUser.isPresent()) {
+            return ResponseEntity.ok(authenticatedUser.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
     }
 
 }

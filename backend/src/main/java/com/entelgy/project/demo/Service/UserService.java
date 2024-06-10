@@ -25,7 +25,7 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public User getUserByUsername(String username) {
+    public Optional<User> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
@@ -33,7 +33,7 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public boolean authenticate(User user) {
+    public Optional<User> authenticate(User user) {
         String email = user.getEmail();
         String password = user.getPassword();
 
@@ -41,9 +41,10 @@ public class UserService {
 
         if (userOptional.isPresent()) {
             User storedUser = userOptional.get();
-            return storedUser.getPassword().equals(password);
+            if (storedUser.getPassword().equals(password)) {
+                return Optional.of(storedUser);
+            }
         }
-
-        return false;
+        return Optional.empty();
     }
 }
