@@ -20,6 +20,22 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User updateUser(Long id, User user) {
+        Optional<User> existingUser = userRepository.findById(id);
+        if (existingUser.isPresent()) {
+            User updatedUser = existingUser.get();
+            updatedUser.setUsername(user.getUsername());
+            updatedUser.setPassword(user.getPassword());
+            updatedUser.setEmail(user.getEmail());
+            return userRepository.save(updatedUser);
+        }
+        return null;
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
