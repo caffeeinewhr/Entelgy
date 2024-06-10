@@ -8,14 +8,41 @@ import org.springframework.stereotype.Service;
 import com.entelgy.project.demo.Entity.Event;
 import com.entelgy.project.demo.Entity.User;
 import com.entelgy.project.demo.Repository.EventRepository;
+import com.entelgy.project.demo.Repository.UserRepository;
 
 @Service
 public class EventService {
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+    
     public Event saveEvent(Event event) {
-        return eventRepository.save(event);
+        Event savedEvent = eventRepository.save(event);
+        return savedEvent;
+    }
+
+    public Event saveEventForUser(Event event, User user) {
+        event.setUser(user);
+        Event savedEvent = eventRepository.save(event);
+        return savedEvent;
+    }
+
+    public Event assignEventToUser(Long eventId, Long userId) {
+        Optional<Event> eventOpt = eventRepository.findById(eventId);
+        Optional<User> userOpt = userRepository.findById(userId);
+
+        if (eventOpt.isPresent() && userOpt.isPresent()) {
+            Event event = eventOpt.get();
+            if (event.getUser() != null) {
+                return null;
+            }
+            User user = userOpt.get();
+            event.setUser(user);
+            return eventRepository.save(event);
+        }
+        return null;
     }
 
     public Event updateEvent(Long id, Event event) {
@@ -33,8 +60,12 @@ public class EventService {
         return null;
     }
     
-    public void deleteEvent(Long id) {
-        eventRepository.deleteById(id);
+    public boolean deleteEvent(Long id) {
+        if (eventRepository.existsById(id)) {
+            eventRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     public List<Event> getAllEvents() {
